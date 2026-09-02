@@ -4,14 +4,12 @@ public class RegexParser {
 
      String input_regex;
      String processed_regex; // The regex after adding explicit concatenation operators
-
+     int length;
      RegexParser(String regex) {
           this.input_regex = regex;
           this.processed_regex = ""; // Initialize the processed regex
-          
+          this.length = regex.length();
      }
-
-     int length = input_regex.length();
 
      public boolean isValid(){
           if (length == 0) {
@@ -130,4 +128,12 @@ public class RegexParser {
      return outputQueue;
      }
 
+     public String getProcessedRegex() {
+          if(isValid()){
+               return infixToPostfix(addConcatenationOperator());
+          }
+          else{
+               return "Invalid regex";
+          }
+     }
 }
