@@ -1,4 +1,18 @@
+import java.util.ArrayList;
+
 public class State {
-     public int id;
+     public String id;
      public boolean accept;
+     public ArrayList<Transition> transitions;
+
+     public State(String id, boolean accept){
+          this.id = id;
+          this.accept = accept;
+          this.transitions = new ArrayList<Transition>();
+     }
+
+     public void addTransition(State to, char symbol){
+          Transition transition = new Transition(this, to, symbol);
+          this.transitions.add(transition);
+     }
 }

@@ -6,13 +6,16 @@ public class RegexEngine {
           if (args.length > 0 && args[0].equals("-v")) {
                verbose = true;
           }
-          Scanner scanner = new Scanner(System.in);
+          // Scanner scanner = new Scanner(System.in);
 
-          String regex = scanner.nextLine();
+          // String regex = scanner.nextLine();
 
-          RegexParser parser = new RegexParser(regex);
+          // RegexParser parser = new RegexParser(regex);
+          
+          // System.out.println(parser.getProcessedRegex());
 
-          System.out.println(parser.getProcessedRegex());
+          BuildENFA enfa = new BuildENFA("ab");
+          enfa.buildEnfa();
          
      }
 }
