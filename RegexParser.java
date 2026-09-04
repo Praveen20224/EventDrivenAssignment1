@@ -4,10 +4,12 @@ public class RegexParser {
 
      String input_regex;
      String processed_regex; // The regex after adding explicit concatenation operators
+     String final_regex;
      int length;
      RegexParser(String regex) {
           this.input_regex = regex;
           this.processed_regex = ""; // Initialize the processed regex
+          this.final_regex = "";
           this.length = regex.length();
      }
 
@@ -27,8 +29,37 @@ public class RegexParser {
                char current = input_regex.charAt(i);
                char next = input_regex.charAt(i + 1);
 
-               if ((current == '*' || current == '+' || current == '(' || current == '|') && (next == '*' || next == '+' || next == ')' || next == '|')) {
-                    return false;
+               // '(' cannot be followed by ')', '*', '+', or '|'
+               if (current == '(') {
+                    if (next == ')' || next == '*' || next == '+' || next == '|') {
+                         return false;
+                    }
+               }
+
+               // '|' cannot be followed by ')', '*', '+', or '|'
+               if (current == '|') {
+                    if (next == ')' || next == '*' || next == '+' || next == '|') {
+                         return false;
+                    }
+               }
+
+               // ')' cannot be followed by '*', '+', '|', ')' is allowed
+               // Concatenation after ')' is handled later by inserting '.'
+
+               // '*' is a postfix operator.
+               // It CANNOT be followed by another '*' or '+'
+               if (current == '*') {
+                    if (next == '*' || next == '+') {
+                         return false;
+                    }
+               }
+
+               // '+' is also postfix.
+               // It CANNOT be followed by another '*' or '+'
+               if (current == '+') {
+                    if (next == '*' || next == '+') {
+                         return false;
+                    }
                }
           }
 

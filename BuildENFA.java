@@ -7,18 +7,25 @@ public class BuildENFA {
      Stack<Fragment> fragmentStack = new Stack<>();
      public static final char ep = '\u03B5';
      ArrayList<State> allStates = new ArrayList<>();
+     ArrayList<Character> allSymbols = new ArrayList<>();
 
      public BuildENFA(String regex) {
           this.regex = regex;
           this.stateCounter = 0;
+          allSymbols.add(ep);
 
      }
 
-     public void buildEnfa(){
+     public Fragment buildEnfa(){
 
           for (int c =0; c<regex.length(); c++){
                char current = regex.charAt(c);
                if (Character.isLetterOrDigit(current) || current == ' '){
+
+                    if (!allSymbols.contains(current)) {
+                         allSymbols.add(current);
+                    }
+
                     State first = new State("S"+stateCounter++,false);
                     State last = new State("S"+stateCounter++,true);
                     allStates.add(first);
@@ -95,12 +102,67 @@ public class BuildENFA {
 
 
           }
+
+          return fragmentStack.pop();
      }
 
      public ArrayList<State> getAllStates() {
           return allStates;
      }
-     
+
+     public String getDestinations(State a, char s){
+          String destinationString = "";
+
+          for (Transition t :a.transitions) {
+               if (t.symbol == s){
+                    if (!destinationString.isEmpty()) {
+                         destinationString += ",";
+                    }
+                    destinationString +=t.to.id;
+               }
+          }
+          return destinationString;
+     }
+
+     public void printENFATable(Fragment enfa){
+
+          System.out.print("\t");
+
+          for (char symbol : allSymbols) {
+
+               System.out.print(symbol + "\t");
+          }
+
+          System.out.println();
+
+          for (State current : allStates){
+               String finalPrintString = "";
+               if (current == enfa.start){
+                    finalPrintString +=">";
+               }
+               if (current.accept){
+                    finalPrintString +="*";
+               }
+               finalPrintString += current.id + "\t";
+
+               for (char s : allSymbols){
+
+                    String destinations = getDestinations(current,s);
+                    if (destinations.equals("")){
+                         finalPrintString +="\t";
+                    }else{
+                         finalPrintString += destinations+"\t";
+                    }
+               }
+
+               System.out.println(finalPrintString);
+
+          }
+
+
+
+     }
+
 
      
 }
