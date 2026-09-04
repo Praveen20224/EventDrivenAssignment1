@@ -17,7 +17,11 @@ public class RegexEngine {
           BuildENFA build = new BuildENFA(parser.getProcessedRegex());
           Fragment enfa =  build.buildEnfa();
           build.printENFATable(enfa);
+
+          ConvertToNFA nfa = new ConvertToNFA(enfa);
           
           
-     }
+
+     }    
 }
+

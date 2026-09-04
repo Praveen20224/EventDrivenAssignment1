@@ -109,6 +109,9 @@ public class BuildENFA {
      public ArrayList<State> getAllStates() {
           return allStates;
      }
+     public ArrayList<Character> getallSymbols() {
+          return allSymbols;
+     }
 
      public String getDestinations(State a, char s){
           String destinationString = "";
