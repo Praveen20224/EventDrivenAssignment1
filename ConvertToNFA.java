@@ -1,11 +1,9 @@
 import java.util.*;
 
-import javax.smartcardio.CardTerminals.State;
-
 public class ConvertToNFA{
 
      Fragment enfa;
-
+     // public static ArrayList<Character> symbols;
      public static final char ep = '\u03B5';
 
      public ConvertToNFA(Fragment enfa){
@@ -53,16 +51,23 @@ public class ConvertToNFA{
 
      public NFA buildNFA(ArrayList<State> allStates,ArrayList<Character> allSymbols){
 
-          allSymbols.remove(ep);
+          ArrayList<Character> symbols = new ArrayList<>(allSymbols);
+          symbols.remove(Character.valueOf(ep));
           State start = enfa.start;
           State end = enfa.end;
           ArrayList<State> startEPClosure = epsilonClosure(start);
-          ArrayList<State> endEPClosure = epsilonClosure(end);
-          NFA nfa = new NFA();
+
+          // System.out.println("Start ε-closure:");
+
+          // for (State s : startEPClosure) {
+          //      System.out.println(s.id);
+          // }
+
+          NFA nfa = new NFA(symbols);
           int counter = 0;
-          
-          for (State s : allStates){
-               
+          HashMap<State, NFAState> ENFA_NFA_Map = new HashMap<>();
+
+          for (State s: allStates){
                boolean st =false;
                boolean accept = false;
 
@@ -71,16 +76,31 @@ public class ConvertToNFA{
                }
 
                ArrayList<State> epClosure = epsilonClosure(s);
+
                if (epClosure.contains(end)){
                     accept=true;
                }
 
                NFAState newNFAState = new NFAState("S"+counter++,st,accept);
-
-               for (Character sym : allSymbols){
-                   newNFAState.addTransition(sym,move(epClosure,sym));      
-               }
+               ENFA_NFA_Map.put(s,newNFAState);
                nfa.states.add(newNFAState);
+          }
+
+
+          for (State s : allStates){
+
+               NFAState currentNFAState = ENFA_NFA_Map.get(s);
+               ArrayList<State> epClosure = epsilonClosure(s);
+               for (Character sym : symbols){
+                    ArrayList<State> reachable = move(epClosure,sym);
+                    ArrayList<NFAState> reachableNFA = new ArrayList<NFAState>();
+                    for (State c:reachable){
+                         reachableNFA.add(ENFA_NFA_Map.get(c));
+                    }
+
+                    currentNFAState.addTransition(sym,reachableNFA);      
+               }
+               
           }
 
           return nfa;

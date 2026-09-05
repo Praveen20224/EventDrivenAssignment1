@@ -2,10 +2,10 @@ import java.util.ArrayList;
 
 public class NFATransition {
 
-     public ArrayList<State> to;
+     public ArrayList<NFAState> to;
      public char symbol;
 
-     NFATransition( char symbol , ArrayList<State> to){
+     NFATransition( char symbol , ArrayList<NFAState> to){
           this.to = to;
           this.symbol = symbol;
      }

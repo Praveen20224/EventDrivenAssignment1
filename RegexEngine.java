@@ -16,11 +16,18 @@ public class RegexEngine {
 
           BuildENFA build = new BuildENFA(parser.getProcessedRegex());
           Fragment enfa =  build.buildEnfa();
-          build.printENFATable(enfa);
+          // build.printENFATable(enfa);
 
-          ConvertToNFA nfa = new ConvertToNFA(enfa);
+          ConvertToNFA convert_nfa = new ConvertToNFA(enfa);
+          
+          NFA nfa = convert_nfa.buildNFA(build.allStates,build.allSymbols);
+          nfa.removeUnreachableStates();
+
+          nfa.printNFATable();
+
           
           
+
 
      }    
 }

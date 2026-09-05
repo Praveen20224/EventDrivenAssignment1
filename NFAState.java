@@ -14,7 +14,7 @@ public class NFAState {
           this.transitions = new ArrayList<NFATransition>();
      }
 
-     public void addTransition(char symbol, ArrayList<State> destinations) {
+     public void addTransition(char symbol, ArrayList<NFAState> destinations) {
 
           transitions.add(new NFATransition(symbol, destinations));
           
