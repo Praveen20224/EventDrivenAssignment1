@@ -111,7 +111,8 @@ public class NFA {
           ArrayList<NFAState> acceptList = new ArrayList<NFAState>();
           for (NFAState s : states){
                if (s.accept){
-                    startList.add(s);
+                    acceptList.add(s);
+                    // startList.add(s);
                }
           }
           return acceptList;

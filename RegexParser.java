@@ -164,6 +164,9 @@ public class RegexParser {
                return infixToPostfix(addConcatenationOperator());
           }
           else{
+               System.err.println("Error: Invalid regular expression.");
+               System.exit(1);
+
                return "Invalid regex";
           }
      }

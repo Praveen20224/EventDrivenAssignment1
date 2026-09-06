@@ -17,7 +17,7 @@ public class DFAState {
                     boolean accept) {
 
         this.id = id;
-        this.subset = subset;
+        this.subset = new ArrayList<>(subset);;
         this.start = start;
         this.accept = accept;
         this.transitions = new ArrayList<>();

@@ -63,6 +63,13 @@ public class ConvertToDFA {
                for (Character sym : nfa.symbols){
                     
                     ArrayList<NFAState> transtionStates = move(top.subset,sym);
+                    // System.out.print(top.id + " --" + sym + "--> { ");
+
+                    // for (NFAState s : transtionStates) {
+                    // System.out.print(s.id + " ");
+                    // }
+
+                    // System.out.println("}");
 
                     DFAState check = dfa.checkDFAStatePresent(transtionStates);
                     if (check == null){
@@ -71,6 +78,14 @@ public class ConvertToDFA {
                          DFS.push(check);
                          dfa.states.add(check);
                     }
+
+                    // System.out.print("Adding transition: ");
+                    // System.out.print(top.id);
+                    // System.out.print(" --");
+                    // System.out.print(sym);
+                    // System.out.print("--> ");
+                    // System.out.println(check.id);
+
                     top.addTransition(sym,check);
 
                }
