@@ -120,7 +120,7 @@ public class DFA {
                for (int i=0; i<input.length() ; i++){
 
                     current = transitionFuntion(current,input.charAt(i));
-                    if (v){
+                    if (v && current != null){
                          System.out.println(current.accept);
                     }
                     if (current == null){
@@ -133,8 +133,8 @@ public class DFA {
                }
 
                if (current != null){
-               System.out.println(current.accept);
-          }
+                    System.out.println(current.accept);
+               }
           }
      }
 }
