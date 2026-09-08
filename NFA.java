@@ -11,6 +11,8 @@ public class NFA {
           this.symbols = new ArrayList<>(symbols);
      }
 
+     // A method which i found necessary while implementing NFA->DFA
+
      public String getDestinations(NFAState state, char symbol) {
 
           for (NFATransition t : state.transitions) {
@@ -32,6 +34,7 @@ public class NFA {
           return "";
      }
 
+     // To print table
      public void printNFATable() {
 
           System.out.print("\t");
@@ -64,12 +67,13 @@ public class NFA {
           }
      }
 
+     // To remove all unreachable states in the current NFA
      public void removeUnreachableStates() {
 
           ArrayList<NFAState> reachable = new ArrayList<>();
           Stack<NFAState> stack = new Stack<>();
 
-          // Add all start states
+          // Push all start states
           for (NFAState state : states) {
                if (state.start) {
                     reachable.add(state);
@@ -77,7 +81,7 @@ public class NFA {
                }
           }
 
-          // DFS
+          // Using DFS method , search for states who have no transitions
           while (!stack.isEmpty()) {
 
                NFAState current = stack.pop();
@@ -97,6 +101,7 @@ public class NFA {
           states.removeIf(state -> !reachable.contains(state));
      }
 
+     // An useful getter method to get start states 
      public ArrayList<NFAState> getStartStates(){
           ArrayList<NFAState> startList = new ArrayList<NFAState>();
           for (NFAState s : states){
@@ -107,6 +112,7 @@ public class NFA {
           return startList;
      }
      
+     // An useful getter method to get accept states 
      public ArrayList<NFAState> getAcceptStates(){
           ArrayList<NFAState> acceptList = new ArrayList<NFAState>();
           for (NFAState s : states){

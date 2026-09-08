@@ -1,3 +1,5 @@
+// A simple transition object which stores from, to and the symbol that triggers the transition.
+
 public class Transition {
      State from;
      State to;

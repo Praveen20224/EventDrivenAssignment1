@@ -10,6 +10,7 @@ public class ConvertToNFA{
           this.enfa = enfa;
      }
 
+     // To compute E-Closure
      public static ArrayList<State> epsilonClosure(State start){
 
           ArrayList<State> closure = new ArrayList<>();
@@ -17,7 +18,7 @@ public class ConvertToNFA{
 
           closure.add(start);
           trackState.push(start);
-
+          // using DFS algorithm to get the complete E-Closure.
           while (!trackState.isEmpty()){
                State current = trackState.pop();
 
@@ -32,8 +33,10 @@ public class ConvertToNFA{
           }
 
           return closure;
-     }
+     } 
 
+
+     // To return a list of reachable states with an symbol.
      public ArrayList<State> move(ArrayList<State> states, char s){
           ArrayList<State> reachable = new ArrayList<State>();
 
@@ -52,7 +55,7 @@ public class ConvertToNFA{
      public NFA buildNFA(ArrayList<State> allStates,ArrayList<Character> allSymbols){
 
           ArrayList<Character> symbols = new ArrayList<>(allSymbols);
-          symbols.remove(Character.valueOf(ep));
+          symbols.remove(Character.valueOf(ep));  // Remove Ep , because there is Ep transition in NFA                      
           State start = enfa.start;
           State end = enfa.end;
           ArrayList<State> startEPClosure = epsilonClosure(start);
@@ -66,6 +69,10 @@ public class ConvertToNFA{
           NFA nfa = new NFA(symbols);
           int counter = 0;
           HashMap<State, NFAState> ENFA_NFA_Map = new HashMap<>();
+
+          // Using HashMap ,  for every E-NFA state , we create an equivalent NFA state.
+          // We are also marking the start and end states by looking at the e-closure , 
+          // following the algorithm mentioned in the notes exactly.
 
           for (State s: allStates){
                boolean st =false;
@@ -86,6 +93,8 @@ public class ConvertToNFA{
                nfa.states.add(newNFAState);
           }
 
+          // Using the HashMap generated above , we modify each NFA State's transition
+          // by computing e-closure and adding a transition for every symbol .
 
           for (State s : allStates){
 
@@ -103,6 +112,8 @@ public class ConvertToNFA{
                
           }
 
-          return nfa;
+          return nfa; // Returning the fully processed NFA
      }
+
+     
 }

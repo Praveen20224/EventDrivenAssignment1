@@ -1,3 +1,5 @@
+// To represent an NFA fragment, recommended by Thompsons Visualization.
+
 public class Fragment {
 
     public final State start;

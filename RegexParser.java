@@ -112,6 +112,8 @@ public class RegexParser {
         return processed_regex;
      }
 
+     // Necessary while converting infix to potfix
+
      public int checkPrecedence(char op){
           switch (op) {
                case '*':
@@ -126,24 +128,30 @@ public class RegexParser {
           }
      }
 
+     // Implementing infix to postfix, which makes it easier when using thompson method of construction
+
      public String infixToPostfix (String infix) {  
           Stack<Character> operator = new Stack<>();
           String outputQueue = "";
           for (int i = 0; i < infix.length(); i++) {
                char c = infix.charAt(i);
-               if (Character.isLetterOrDigit(c) || c == ' ') {
+
+               // If its a letter or space, store it to final string
+               if (Character.isLetterOrDigit(c) || c == ' ') { 
                     outputQueue += c;
                } 
+               //  if its '(' push to stack 
                else if (c == '(') {
                     operator.push(c);
                } 
+               // if its ')' pop until '(' is found and pop it. 
                else if (c == ')') {
                     while (!operator.isEmpty() && operator.peek() != '(') {
                          outputQueue += operator.pop();
                     }
-                    operator.pop(); // Pop the '('
+                    operator.pop();
                }
-               else { // Operator push
+               else { // if operator is found, check the precedence of the top of operator stack and pop until lower precedence found.
                     while (!operator.isEmpty() && checkPrecedence(operator.peek()) >= checkPrecedence(c)) {
                          outputQueue += operator.pop();
                     }
@@ -152,15 +160,18 @@ public class RegexParser {
                
      }
 
+     // Append the remaing operators
+
      while (!operator.isEmpty()) {
           outputQueue += operator.pop();
      }
 
-     return outputQueue;
+     return outputQueue; // return postfix equvivalent
      }
 
      public String getProcessedRegex() {
-          if(isValid()){
+          // check if the input regex is valid, if not valid exit with code 1 else return postfix string.
+          if(isValid()){ 
                return infixToPostfix(addConcatenationOperator());
           }
           else{

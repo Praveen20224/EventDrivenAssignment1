@@ -33,6 +33,7 @@ public class DFA {
                               count++;
                          }
                     }
+                    // Check for the same subset instantly.
 
                     if (count == subset.size() ){
                     // System.out.print("Returning " + s.id + " for subset { ");
@@ -53,6 +54,7 @@ public class DFA {
           return null;
      }
 
+     // An helper method used while printing DFA table.
      public String getDestination(DFAState state, char symbol) {
 
           for (DFATransition t : state.transitions) {
@@ -64,6 +66,7 @@ public class DFA {
           return "";
      }
 
+     // Method to print DFA table.
      public void printDFATable() {
 
           System.out.print("\t");
@@ -93,6 +96,8 @@ public class DFA {
           }
      }
 
+
+     // A simple transition function based from fsa notes.
      public DFAState transitionFuntion(DFAState left, char symbol){
           for (DFATransition t :left.transitions){
                if (t.symbol == symbol){
@@ -101,26 +106,35 @@ public class DFA {
           }
           return null;
      }
+
+     // A function which takes the user input to validate against the DFA computed
+
      public void validateString(String input, boolean v){
           DFAState current = this.states.get(0);
 
-          for (int i=0; i<input.length() ; i++){
-
-               current = transitionFuntion(current,input.charAt(i));
-               if (v){
-                    System.out.println(current.accept);
-               }
-               if (current == null){
-                    System.out.println(false);
-                    break;
-               }
-               if (v){
-                    System.out.println(input.charAt(i));
-               }
-          }
-
-          if (current != null){
+          if (input.length() == 0){
                System.out.println(current.accept);
+          }
+          else{
+
+               for (int i=0; i<input.length() ; i++){
+
+                    current = transitionFuntion(current,input.charAt(i));
+                    if (v){
+                         System.out.println(current.accept);
+                    }
+                    if (current == null){
+                         System.out.println(false);
+                         break;
+                    }
+                    if (v){
+                         System.out.println(input.charAt(i));
+                    }
+               }
+
+               if (current != null){
+               System.out.println(current.accept);
+          }
           }
      }
 }

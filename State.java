@@ -1,3 +1,5 @@
+// A simple State with basic necessary parameters used for representing E-NFA states.
+
 import java.util.ArrayList;
 
 public class State {
@@ -16,3 +18,4 @@ public class State {
           this.transitions.add(transition);
      }
 }
+

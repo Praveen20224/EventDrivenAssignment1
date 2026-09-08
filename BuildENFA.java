@@ -2,14 +2,14 @@ import java.util.*;
 
 public class BuildENFA {
 
-     String regex;
+     String regex;     // Store Input Regex
      int stateCounter; // Counter to assign unique IDs to states
-     Stack<Fragment> fragmentStack = new Stack<>();
-     public static final char ep = '\u03B5';
-     ArrayList<State> allStates = new ArrayList<>();
-     ArrayList<Character> allSymbols = new ArrayList<>();
+     Stack<Fragment> fragmentStack = new Stack<>(); // Used in Thompson's nfa construction
+     public static final char ep = '\u03B5'; // epsilon character
+     ArrayList<State> allStates = new ArrayList<>(); // To store all E-NFA states
+     ArrayList<Character> allSymbols = new ArrayList<>(); // To store all the symbols seen
 
-     public BuildENFA(String regex) {
+     public BuildENFA(String regex) { //Construtor Intialization
           this.regex = regex;
           this.stateCounter = 0;
           allSymbols.add(ep);
@@ -20,7 +20,7 @@ public class BuildENFA {
 
           for (int c =0; c<regex.length(); c++){
                char current = regex.charAt(c);
-               if (Character.isLetterOrDigit(current) || current == ' '){
+               if (Character.isLetterOrDigit(current) || current == ' '){ // Also treating space as a valid input symbol
 
                     if (!allSymbols.contains(current)) {
                          allSymbols.add(current);
@@ -28,11 +28,11 @@ public class BuildENFA {
 
                     State first = new State("S"+stateCounter++,false);
                     State last = new State("S"+stateCounter++,true);
-                    allStates.add(first);
-                    allStates.add(last);
-                    
+                    allStates.add(first); 
+                    allStates.add(last);                                   // Applying Thompson's rule
+
                     first.addTransition(last,current);
-                    Fragment symbol = new Fragment(first,last);
+                    Fragment symbol = new Fragment(first,last); 
                     // System.out.println("Pushing Fragment of "+ current);
                     fragmentStack.push(symbol);
                     // System.out.println("After Pushing start: "+ fragmentStack.peek().start.id + "Transition with symbol :" + fragmentStack.peek().start.transitions.get(0).symbol + " to " + fragmentStack.peek().end.id);
@@ -41,7 +41,7 @@ public class BuildENFA {
                     Fragment second = fragmentStack.pop();
                     Fragment first = fragmentStack.pop();
                     first.end.accept = false;
-                    first.end.addTransition(second.start,ep);
+                    first.end.addTransition(second.start,ep);              // Applying Thompson's rule of kleene dot
                     Fragment addConcatOp = new Fragment(first.start,second.end);
                     fragmentStack.push(addConcatOp);
 
@@ -59,7 +59,7 @@ public class BuildENFA {
                     newStart.addTransition(first.start,ep);
                     newStart.addTransition(second.start,ep);
                     first.end.addTransition(newEnd,ep);
-                    second.end.addTransition(newEnd,ep);
+                    second.end.addTransition(newEnd,ep);                   // Applying Thompson's rule of kleene or
 
                     Fragment newOR = new Fragment(newStart,newEnd);
                     fragmentStack.push(newOR);
@@ -78,7 +78,7 @@ public class BuildENFA {
                     newStart.addTransition(first.start,ep);
                     first.end.addTransition(first.start,ep);
                     first.end.addTransition(newEnd,ep);
-
+                                                                           // Applying Thompson's rule of kleene star
                     Fragment newStar = new Fragment(newStart,newEnd);
                     fragmentStack.push(newStar);
                }else if (current == '+'){
@@ -95,7 +95,7 @@ public class BuildENFA {
                     newStart.addTransition(first.start,ep);
                     first.end.addTransition(first.start,ep);
                     first.end.addTransition(newEnd,ep);
-
+                                                                           // Applying Thompson's rule of +
                     Fragment newPlus = new Fragment(newStart,newEnd);
                     fragmentStack.push(newPlus);
                }
@@ -103,14 +103,15 @@ public class BuildENFA {
 
           }
 
-          return fragmentStack.pop();
+          return fragmentStack.pop(); // Return the final fragment which contains the final E-NFA
      }
 
      public ArrayList<State> getAllStates() {
-          return allStates;
+          return allStates;           // An usefull getter method                                
      }
+     
      public ArrayList<Character> getallSymbols() {
-          return allSymbols;
+          return allSymbols;            // An usefull getter method
      }
 
      public String getDestinations(State a, char s){
@@ -125,7 +126,7 @@ public class BuildENFA {
                }
           }
           return destinationString;
-     }
+     }                                  // An useful repeated method used while printing table.
 
      public void printENFATable(Fragment enfa){
 

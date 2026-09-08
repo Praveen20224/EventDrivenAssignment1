@@ -1,3 +1,4 @@
+// A class suitable for an nfa transition
 import java.util.ArrayList;
 
 public class NFATransition {

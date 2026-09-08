@@ -1,3 +1,5 @@
+// A simple transition meant for DFA
+
 public class DFATransition {
 
     public char symbol;

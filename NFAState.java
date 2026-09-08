@@ -1,3 +1,4 @@
+// A class for NFA state, with parameters id,start,accept and its correspoding list of transitions
 import java.util.ArrayList;
 
 public class NFAState {
@@ -18,6 +19,6 @@ public class NFAState {
 
           transitions.add(new NFATransition(symbol, destinations));
           
-     } 
+     }
 
 }
